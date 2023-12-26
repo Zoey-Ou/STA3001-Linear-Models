@@ -1,0 +1,333 @@
+---
+title: "STA3001 Assignment1 121090429"
+author: "Ziyi Ou"
+date: "2023-10-02"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 1
+
+(a)
+
+```{r 1(a)}
+quantile_95_norm <- qnorm(0.95, mean = 10,sd = 3)
+quantile_99_norm <- qnorm(0.99, mean = 10, sd = 3)
+```
+
+```{r 1(a) output}
+quantile_95_norm
+quantile_99_norm
+```
+
+(b)
+```{r 1(b)}
+df_t1 <- 10
+df_t2 <- 25
+
+quantile_95_t1 <- qt(0.95, df = df_t1)
+quantile_99_t1 <- qt(0.99, df = df_t1)
+
+quantile_95_t2 <- qt(0.95, df = df_t2)
+quantile_99_t2 <- qt(0.99, df = df_t2)
+```
+
+
+```{r 1(b) output}
+quantile_95_t1
+quantile_99_t1
+quantile_95_t2
+quantile_99_t2
+```
+
+(c)
+```{r 1(c)}
+df_chi1 <- 1
+df_chi2 <- 4
+df_chi3 <- 10
+
+quantile_95_chi1 <- qchisq(0.95, df = df_chi1)
+quantile_99_chi1 <- qchisq(0.99, df = df_chi1)
+
+quantile_95_chi2 <- qchisq(0.95, df = df_chi2)
+quantile_99_chi2 <- qchisq(0.99, df = df_chi2)
+
+quantile_95_chi3 <- qchisq(0.95, df = df_chi3)
+quantile_99_chi3 <- qchisq(0.99, df = df_chi3)
+```
+
+```{r 1(c) output}
+quantile_95_chi1
+quantile_99_chi1
+quantile_95_chi2
+quantile_99_chi2
+quantile_95_chi3
+quantile_99_chi3
+```
+
+(d)
+```{r 1(d)}
+df_f1_d1 <- 2
+df_f1_d2 <- 10
+df_f2_d1 <- 4
+df_f2_d2 <- 10
+
+quantile_95_f1 <- qf(0.95, df1 = df_f1_d1, df2 = df_f1_d2)
+quantile_99_f1 <- qf(0.99, df1 = df_f1_d1, df2 = df_f1_d2)
+quantile_95_f2 <- qf(0.95, df1 = df_f2_d1, df2 = df_f2_d2)
+quantile_99_f2 <- qf(0.99, df1 = df_f2_d1, df2 = df_f2_d2)
+```
+
+```{r 1(d) output}
+quantile_95_f1
+quantile_99_f1
+quantile_95_f2
+quantile_99_f2
+```
+
+## Exercise 2
+(a)
+
+By the fact that $P(Z^2 \le z) = P(-\sqrt{z} \le Z \le \sqrt{z})$, we get: $P(Z^2 \le z) = P(Z \le \sqrt{z}) - P(Z \le \sqrt{z})$.  
+Suppose $z$ is the ${(1-a)}^{th}$ percentile of $Z^2$, by the fact above, $\sqrt{z}$ is the $(1-\frac{a}{2})^{th}$ percentile of $Z$.
+
+```{r 2(a)}
+# Z_square
+percentiles_Z_square <- c(75, 95, 99)
+quantiles_Z_square <- qnorm((50 + 0.5*percentiles_Z_square) / 100, mean = 0, sd = 1)^2
+
+# chi-square(1)
+df_chi1 <- 1
+quantiles_chi1 <- qchisq(percentiles_Z_square / 100, df = df_chi1)
+
+# Compare the percentiles
+for (i in 1:length(percentiles_Z_square)) {
+  cat(paste("   ", percentiles_Z_square[i], 
+            "th percentile of Z^2:", quantiles_Z_square[i], "\n"))
+  cat(paste("   ", percentiles_Z_square[i], 
+            "th percentile of chi-square(1):", quantiles_chi1[i], "\n"))
+}
+
+```
+By the output above, for all the percentiles we look up, the square of a standard normal distribution is the same as a chi-square distribution with one degree of freedom, thus we can convince ourselves that they are the same.
+
+(b)
+
+Here we look up percentiles with $\nu = 5$ and $\nu = 10$  
+For $\nu = 5$:
+```{r 2(b)-1}
+nu <- 5
+
+# t-distribution
+percentiles_t2 <- c(75, 95, 99)
+quantiles_t2 <- (qt((50 + 0.5*percentiles_t2) / 100, df = nu))^2
+
+# F(1, ν) distribution
+df_f <- c(1, nu)
+quantiles_F <- qf(percentiles_t2 / 100, df1 = df_f[1], df2 = df_f[2])
+
+# Compare the percentiles
+cat("\nb. Comparison of square of t-distribution and F(1, nu) percentiles:\n")
+for (i in 1:length(percentiles_t2)) {
+  cat(paste("   ", percentiles_t2[i], 
+            "th percentile of square of t-distribution:", quantiles_t2[i], "\n"))
+  cat(paste("   ", percentiles_t2[i], 
+            "th percentile of F(1, nu):", quantiles_F[i], "\n"))
+}
+```
+
+For $\nu = 10$:
+```{r 2(b)-2}
+nu <- 10
+
+# t-distribution
+percentiles_t2 <- c(75, 95, 99)
+quantiles_t2 <- (qt((50 + 0.5*percentiles_t2) / 100, df = nu))^2
+
+# F(1, ν) distribution
+df_f <- c(1, nu)
+quantiles_F <- qf(percentiles_t2 / 100, df1 = df_f[1], df2 = df_f[2])
+
+# Compare the percentiles
+cat("\nb. Comparison of square of t-distribution and F(1, ν) percentiles:\n")
+for (i in 1:length(percentiles_t2)) {
+  cat(paste("   ", percentiles_t2[i], 
+            "th percentile of square of t-distribution:", quantiles_t2[i], "\n"))
+  cat(paste("   ", percentiles_t2[i], 
+            "th percentile of F(1, ν):", quantiles_F[i], "\n"))
+}
+```
+
+By the output above, for all the percentiles we look up, the square of a t distribution with $\nu$ degrees of freedom is the same as the $F(1,\nu)$ distribution, thus we can convince ourselves that they are the same.
+
+\newpage
+## Exercise 3
+
+\newpage
+\newpage
+## Exercise 4
+(a)
+```{r 4(a)}
+y <- c(20, 18, 10, 6, 11)
+x <- c(6, 6, 4, 2, 3)
+plot(x,y)
+```
+
+(b)
+```{r 4(b)}
+regression <- lm(y~x)
+
+print(summary(regression))
+```
+From the regression table above, we get the estimated intercept $\hat{\beta_0} = b_0 = -0.125$, the estimated slope of the line $\hat{\beta_1} = b_1 = 3.125$.
+
+(c)
+```{r 4(c)}
+plot(x,y,col = "blue",main = "Sales & Sales people on duty Regression",
+abline(lm(y~x)),cex = 1.3,pch = 16,xlab = "Sales people on duty",ylab = "Sales")
+```
+
+(d)
+```{r 4(d)}
+a <- data.frame(x = 5)
+result <-  predict(regression,a)
+print(round(result))
+```
+When an average of five salespeople are kept on the showroom floor each day, approximately 16 cars should the dealer expect to sell.
+
+(e)
+```{r 4(e)}
+mu <- fitted(regression)
+residual <- resid(regression)
+plot(mu, residual, main = "Residuals vs. Fitted Values", 
+     xlab = "Fitted Values", ylab = "Residuals")
+abline(h = 0, col = "red", lty = 2)
+```
+
+
+(f)
+```{r 4(f)}
+summary_lm <- summary(regression)
+residual_variance <- summary_lm$sigma^2
+print(residual_variance)
+```
+The estimated $\sigma^2$ is 3.666667.
+
+(g)
+```{r 4(g)}
+conf_interval <- confint(regression, level=0.95)
+print(conf_interval)
+```
+The 95% confidence interval of $\hat{\beta_1}$ is $[1.421697,4.828303]$.
+
+The results of hand calculation is basically the same as the results from these program with slight differences caused by rounding errors.
+
+## Exercise 5
+(a)
+```{r 5(a)}
+GMAT <- c(560,540,520,580,520,620,660,630,550,550,600,537)
+GPA <- c(3.20,3.44,3.70,3.10,3.00,4.00,3.38,3.83,2.67,2.75,2.33,3.75)
+
+fit <- lm(GPA~GMAT)
+summary_lm_ex5 <- summary(fit)
+r_squared <- summary_lm_ex5$r.squared
+print(r_squared)
+```
+The coefficient of determination $R^2$ is 0.02937136. $R^2$ measures how well a statistical model predicts an outcome based on the proportion of total variation of outcomes explained by the model. In this regression model, GMAT explains 2.9% of the total variation of GPA.
+
+(b)
+```{r 5(b)}
+second_person <- data.frame(GMAT = 540)
+fit_val <-  predict(fit,second_person)
+print(round(fit_val,3))
+```
+By the printed result above, the fitted value for the second person is 3.20.
+
+(c)
+```{r 5(c)}
+print(summary(fit))
+conf_interval_GMAT <- confint(fit, level=0.95)
+print(conf_interval_GMAT)
+```
+The regression equation is $y_i = \beta_0 + \beta_1x_i + \epsilon_i$, to test whether GMAT is an important predictor variable, we make the null hypothesis $H_0:\beta_1 = 0$.
+
+By the regression table, we know that the p-value for GMAT is 0.594, which is larger than the significance level $\alpha = 0.05$, we accept the null hypothesis. GMAT is not an important predictor variable.
+
+## Exercise 6
+(a)
+
+$\hat{y_i} = \hat{\beta_1}x_i, i = 1,2,...,n$.
+
+The sum of square error is $RSS = \sum_{i=1}^n (y_i - \hat{y}_i)^2$. 
+
+To minimize $RSS$, we let $\frac{\partial RSS}{\partial \hat{\beta_1}} = 0$, i.e., $\sum_{i=1}^n x_i(y_i - \hat{\beta_1}x_i) = 0$.
+
+We get: $\hat{\beta_1} = \displaystyle \frac{\sum_{i=1}^n x_iy_i}{\sum_{i=1}^n x_i^2}$.
+
+$s^2 = \displaystyle \frac{1}{n-1}\sum_{i=1}^n(y_i - \hat{y_i})^2 = \frac{1}{n-1}(y_i - \hat{\beta_1}x_i)^2$.
+
+(b)
+
+$\sum_{i=1}^n e_i$ isn't necessarily equal to 0.
+
+Since $\epsilon_i$ follows the usual assumptions, $\sum_{i=1}^n \epsilon_i = 0$. 
+
+Therefore $\sum_{i=1}^n y_i = \sum_{i=1}^n (\beta_1x_i + \epsilon_i) = \sum_{i=1}^n \beta_1 x_i + \sum_{i=1}^n \epsilon_i = \sum_{i=1}^n \beta_1x_i = \beta_1 \sum_{i=1}^n x_i$.
+
+\begin{align*}
+\sum_{i=1}^n e_i &= \sum_{i=1}^n (y_i - \hat{\beta_1} x_i) \\ 
+&= \sum_{i=1}^n \displaystyle [y_i - \frac{\sum_{i=1}^n x_iy_i}{\sum_{i=1}^n x_i^2}x_i] \\
+&= \displaystyle \sum_{i=1}^n y_i - (\frac{\sum_{i=1}^n x_iy_i}{\sum_{i=1}^n x_i^2}) \sum_{i=1}^n x_i \\
+&= \displaystyle \beta_1 \sum_{i=1}^n x_i -(\frac{\sum_{i=1}^n x_i^2 \beta_1 + \sum_{i=1}^n x_i \epsilon_i}{\sum_{i=1}^n x_i^2}) \sum_{i=1}^nx_i \\
+&= \displaystyle -\frac{\sum_{i=1}^n x_i \epsilon_i}{\sum_{i=1}^n x_i^2} \sum_{i=1}^n x_i
+\end{align*}
+
+Since $\sum_{i=1}^n x_i\epsilon_i$ or $\sum_{i=1}^n x_i$ don't necessarily equal to 0, therefore $\sum_{i=1}^n e_i = 0$ isn't necessarily true.
+
+(c)
+
+$\mathrm{Var}(\hat{\beta_1}) = \mathrm{Var}(\displaystyle \frac{\sum_{i=1}^n x_iy_i}{\sum_{i=1}^n x_i^2}) = \displaystyle \frac{1}{(\sum_{i=1}^n x_i^2)^2} \mathrm{Var}(\sum_{i=1}^n x_i y_i) = \displaystyle \frac{1}{(\sum_{i=1}^n x_i^2)^2} [\sum_{i=1}^n\mathrm{Var}(x_iy_i)  + \sum_{i=1}^n \sum_{i\neq j}^n \mathrm{Cov}(\epsilon_i,\epsilon_j)]$
+
+$\sum_{i=1}^n\mathrm{Var}(x_iy_i) = \sum_{i=1}^n x_i^2 \cdot \mathrm{Var}(y_i) = \sum_{i=1}^n x_i^2 \cdot \mathrm{Var}(\epsilon_i) = \sigma^2 \sum_{i=1}^n x_i^2$
+
+Know that $\epsilon_i \perp \epsilon_j$, $\forall i \neq j$, therefore, $\forall i \neq j, \mathrm{Cov}(\epsilon_i,\epsilon_j)=0$. Hence we get $\sum_{i=1}^n \sum_{i\neq j}^n \mathrm{Cov}(\epsilon_i,\epsilon_j) = 0$.
+
+$\Rightarrow \mathrm{Var}(\hat{\beta_1}) = \displaystyle \frac{1}{(\sum_{i=1}^n x_i^2)^2} [\sigma^2 \sum_{i=1}^n x_i^2 + 0] = \frac{\sigma^2}{\sum_{i=1}^n x_i^2}$
+
+
+## Exercise 7
+(a)
+```{r 7(a)}
+Temp <- c(1520,1520,1520,1520,1520,1520,1620,1620,1620,1620,1620,1620, 
+          1660,1660,1660,1660,1660,1660,1708,1708,1708,1708,1708,1708)
+lifetime <- c(1953,2135,2471,4727,6143,6314,1190,1286,1550,2125,2557,2845,
+              651,837,848,1038,1361,1543,511,651,651,652,688,729)
+plot(Temp,lifetime, xlab = "Temperature", ylab = "Lifetime (Hours)")
+```
+From the plot above, we can see that there exists a linear trend between Temperature $T$ and lifetime $y$: the lifetime of heaters decreases as the temperature increases.
+
+(b)
+```{r 7(b)}
+LY = log(lifetime)
+plot(Temp,LY, xlab = "Temperature", ylab = "logarithm of Lifetime")
+```
+Similar to the plot in (a), there exists a linear trend between Temperature $T$ and the logarithm of lifetime LY: LY decreases as the temperature increases. Compared with (a), the dots in the scatter plot of (b) are distributed more closely, indicating a stronger linear relationship.
+
+(c)
+
+i.
+
+```{r 7(c)}
+plot(Temp,LY, main = "Lifetime & Temperature Regression",
+     abline(lm(LY~Temp)),cex = 1.3,pch = 16,xlab = "Temperature",ylab = "Lifetime")
+```
+
+ii.
+
+I am not satisfied with the fit because the variance of the residuals vary with different value of the predictor variable, indicating a heteroskedasticity. To improve the model, we can consider weighted least square estimate to get a better fitting model. Moreover, since the model only considers one factor (temperature), adopting multiple linear regression by considering all five factors might also help with the better fitting results.

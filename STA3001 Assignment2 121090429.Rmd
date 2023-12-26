@@ -1,0 +1,182 @@
+---
+title: "STA3001 Assignment2 121090429"
+author: "Ziyi Ou"
+date: "2023-10-22"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Q1
+```{r}
+a2 = read.table("/Users/ziyiou/fev.dat.txt",sep=" ",header=T) # Load the data set
+fev <- a2$fev; age <- a2$age
+```
+
+### (a)
+```{r 1(a)}
+# Q1 (a): plot FEV vs age and the scale-location plot
+mod1 = lm(fev~age)
+par(mfrow=c(1,2))
+plot(age,fev,type="p",col="blue",pch=21, main="FEV vs age")
+plot(mod1,which=3) # 'which' selects from among the 4 lm plots
+```
+
+Comments:
+
+1. Scale-location plot is a type of diagnostic plots for linear regression analysis. It is a type of plot that displays the fitted values of a regression model along the x-axis and the the square root of the standardized residuals along the y-axis. It shows if residuals are spread equally along the ranges of predictors, which helps us check for homoscedasticity.
+
+2. The red line is not roughly horizontal across the scale-location plot, which means the average magnitude of the standardized residuals change as a function of the fitted values.
+
+3. The spread of standardized residuals around the red line varies with the fitted values. When the fitted values $\in [2.0,3.0]$, residuals become more closely spread. Thus the variability of residuals' magnitudes vary as a function of the fitted values.
+
+4. In conclusion, this model doesn't satisfy the assumption of homoscedasticity.
+
+
+### (b)
+```{r 1(b)}
+# Q1 (b): plot transformation of the data
+
+# Square root transformation
+fev_sqrt = sqrt(fev)
+age_sqrt = sqrt(age)
+mod2 = lm(fev_sqrt~age_sqrt)
+par(mfrow = c(1,2))
+plot(age_sqrt,fev_sqrt,type="p",col="darkgreen",pch=21, main="sqrt(FEV) vs sqrt(age)")
+plot(mod2,which=3)
+
+# Logarithmic transformation
+fev_log = log(fev)
+age_log = log(age)
+mod3 = lm(fev_log~age_log)
+par(mfrow = c(1,2))
+plot(age_log,fev_log,type="p",col="darkorange",pch=21, main="log(FEV) vs log(age)")
+plot(mod3,which=3)
+
+# Reciprocal transformation
+reciprocal <- function(x) {
+  return(1 / x)
+}
+
+fev_reci = reciprocal(fev)
+age_reci = reciprocal(age)
+mod4 = lm(fev_reci~age_reci)
+par(mfrow = c(1,2))
+plot(age_reci,fev_reci,type="p",col="purple",pch=21, main="(FEV)^(-1) vs (age)^(-1)")
+plot(mod4,which=3)
+
+```
+
+Comments:
+
+From these plots, the logarithmic transformation seems best.
+
+From the scatter plots of three transformation, we can see that for the square root transformation and the logarithmic transformation, the points on the scatter plots closely resemble a straight line， whereas the points on the scatter plot for the reciprocal transformation don't. Therefore the square root transformation and the logarithmic transformation satisfy the assumption of linearity. 
+
+Now we check the scale-location plot. Among three transformations, the red line of the logarithmic transformation is nearest to the horizontal line. Standardized residuals seem to spread equally along the range of predicted response for the square root transformation and the logarithmic transformation.
+
+Therefore, we can conclude that the logarithmic transformation seems best.
+
+
+## Q2
+
+### (a)
+
+The estimated regression model I choose in 1(b) is the logarithmic transformation model.
+
+The regression formula is $log(FEV_i) = \hat{\beta}_{0} + \hat{\beta}_{1}\cdot log(age_i)$ for $i = 1,2,...,654$.
+
+
+### (b)
+```{r 2(b)-1}
+par(mfrow = c(1,2))
+plot(mod1, which=3, main="Untransformed regression")
+plot(mod3, which=3, main="log-transformed regression")
+```
+
+The logarithmic transformation has improved adherence to the constant variance assumption. By comparing the red lines in the scale-location plot for the original regression and the log-transformed regression, we can see that the red line in the log-transformed plot is more horizontal. This indicates a less-volatile average residuals with fitted values, which contributes to adherence to the constant variance assumption. 
+
+```{r 2(b)-2}
+par(mfrow = c(2,2))
+plot(mod3)
+```
+
+We check four diagnostic visuals of the log-transformed model to see whether it is acceptable. From the Residuals vs Fitted values plot, we can se there is no distinctive pattern, therefore linearity exists. From the Q-Q Residuals plot, we can see that most data points lie on  straight line and thus the model satisfies the normality assumption. From the scale-location plot, we can see a nearly horizontal red line and equally spreaded residuals, so we can conclude that the homoscedasticity assumption is satisfied. Therefore, this linear model is acceptable.
+
+### (c)
+```{r 2(c)}
+coefficients <- coef(mod3)
+slope <- coefficients["age_log"]
+cat("The slope is:", slope)
+```
+
+The slope indicates how the logarithm of FEV (Forced Expiratory Volume) changes with respect to the logarithm of age. The slope here is 0.8461529, this means for people aged 3 to 19, on average, when the logarithm of their age increases by 1, the logarithm of their FEV will increase by 0.8461529.
+
+### (d)
+```{r 2(d)-1}
+# Confidence Interval for the Mean Response
+age_values <- c(8, 17, 21)
+mean_response <- predict(mod1, newdata = data.frame(age = age_values), 
+                         interval = "confidence", level = 0.95)
+print(mean_response)
+```
+
+By the above output, we can see that the 95% confidence interval for mean response in the untransformed scale for \textbf{age = c(8,17,21)} are separately [2.155901, 2.260051], [4.093253, 4.319436] and [4.925386, 5.263631].
+
+```{r 2(d)-2}
+# Prediction Intervals
+prediction_intervals <- predict(mod1, newdata = data.frame(age = age_values), 
+                                interval = "prediction", level = 0.95)
+print(prediction_intervals)
+```
+
+By the above output, we can see that the 95% prediction interval for mean response in the untransformed scale for \textbf{age = c(8,17,21)} are separately [1.092359, 3.323593], [3.086220, 5.326470] and [3.967347, 6.221670].
+
+### (e)
+```{r 2(e)}
+DFFIT <- dffits(mod3)
+DFBETA <- dfbetas(mod3)[, "age_log"] # don't bother with the intercept
+CookDistance <- cooks.distance(mod3)
+
+# Identify influential points based on thresholds (you can adjust these)
+threshold_DFFIT <- 2 * sqrt(2 / length(age))
+threshold_DFBETA <- 2 / sqrt(length(age))
+threshold_Cook <- 4 / (length(age))
+
+# Identify influential points
+influential_pts_index <- which(abs(DFFIT) > threshold_DFFIT 
+                               | abs(DFBETA) > threshold_DFBETA 
+                               | CookDistance > threshold_Cook)
+
+
+data_frame = data.frame("log(Age)" = age_log, "log(FEV)" = fev_log)
+influential_pts <- data_frame[influential_pts_index,]
+
+# Print the influential points
+print(length(DFBETA))
+print("Influential Points:")
+print(influential_pts)
+cat("The number of influential points:",length(influential_pts_index))
+
+# Plot the influential points with regression line
+par(mfrow = c(1,1))
+plot(age_log, fev_log, col = "blue", pch = 21, main = "Scatterplot with Influential Points")
+abline(mod3, col = "red")  # Add the regression line
+points(influential_pts, col = "green", pch = 19)
+legend("bottomright", legend = "Influential Points", col = "green", pch = 19)
+```
+
+Comments:
+
+1. By the above results, there are 52 influential points in the transformed data.
+
+2. From the Scatterplot with Influential Points, we can see that some of these influential points have a positive influence on the model. They help refine our model's fit by highlighting a distinct trend in the data.
+
+3. Some of the influential points have a negative influence on the model. They are outliers that have large residual.
+
+4. To improve the model, we should remove influential points with negative influence after investigating where such points came from.

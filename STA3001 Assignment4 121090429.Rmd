@@ -1,0 +1,563 @@
+---
+title: "STA3001 Assignment4 121090429"
+author: "Ziyi Ou"
+date: "2023-12-07"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## 6.4
+
+### (a)
+#### (i) Mean vector of $\mu$
+
+\
+
+$$\mathrm{E}(\boldsymbol{\hat{\mu}}) = \mathrm{E}(X\hat{\beta}) = X\cdot\mathrm{E}(\hat{\beta}) = X\beta$$
+
+#### (ii) Covariance matrix of $\mu$
+
+\
+
+\begin{align*}
+V(\boldsymbol{\hat{\mu}}) &= V(X\hat{\beta}) \\
+&= X \cdot V(\hat{\beta}) \cdot X' \\
+&= X \cdot V((X'X)^{-1}X'Y) \cdot X' \\
+&= X(X'X)^{-1}X'\cdot V(Y) \cdot X(X'X)^{-1}X' \\
+&= X(X'X)^{-1}X'\cdot \sigma^2 I \cdot X(X'X)^{-1}X' \\
+&= \sigma^2 X(X'X)^{-1}X'
+\end{align*}
+
+### (b)
+\begin{align*}
+\displaystyle \frac{1}{n}\sum_{i=1}^{n}V(\hat{\mu}_i) &= \frac{1}{n} \mathrm{tr}(V(\boldsymbol{\hat{\mu}})) \\ 
+&= \frac{1}{n} \mathrm{tr}(\sigma^2 X(X'X)^{-1}X') \\
+& = \frac{\sigma^2}{n} \mathrm{tr}(X(X'X)^{-1}X') \\
+&= \frac{\sigma^2}{n} \mathrm{tr}(X'X(X'X)^{-1}) \mathrm{\ since \ tr(AB) \ = tr(BA)} \\
+&= \frac{\sigma^2}{n} \mathrm{tr}(I_{(p+1)\times(p+1)}) \\
+&= \frac{(p+1)}{n} \sigma^2
+\end{align*}
+
+### (c)
+\begin{center}
+$(\boldsymbol{a}'_{i}H)(\boldsymbol{a}'_{i}H)' = \boldsymbol{a}'_{i}HH'\boldsymbol{a}_{i}=\boldsymbol{a}'_{i}H\boldsymbol{a}_{i} = h_{ii}$ \\
+
+Since $\boldsymbol{a}'_{i}HH'\boldsymbol{a}_{i} = \boldsymbol{a}'_{i}HH\boldsymbol{a}_{i} = h_{i1}^2 + \dots + h_{ii}^2 + \dots + h_{in}^2$, \\
+
+$h_{ii} = h_{i1}^2 + \dots + h_{ii}^2 + \dots h_{in}^2 \geq 0$ and $h_{ii} \geq h_{ii}^2$, which means $h_{ii} \in [0,1]$.  
+\end{center}
+
+### (e)
+\begin{center}
+Since $\hat{\boldsymbol{\mu}}$ and $\tilde{\boldsymbol{\mu}}$ are two solutions to $X'X\beta = X'\boldsymbol{y}$, \\
+$X'\hat{\boldsymbol{\mu}} = X'\tilde{\boldsymbol{\mu}}$, therefore $\hat{\boldsymbol{\mu}} = \tilde{\boldsymbol{\mu}}$
+\end{center}
+
+## 6.5
+
+### (a)
+\begin{center}
+$\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}$, \quad
+$\mathbf{w} = \begin{bmatrix} w_1 \\ w_2 \\ \vdots \\ w_n \end{bmatrix}$
+\end{center}
+
+\begin{center}
+$\mathbf{vw}' = \begin{bmatrix} v_1w_1 & v_1w_2 & \dots & v_1w_r \\ v_2w_1 & v_2w_2 & \ddots & v_2w_r \\ \vdots & \vdots & \ddots & \vdots \\ v_rw_r & v_rw_2 & \dots & v_rw_r \\ \end{bmatrix}$
+\end{center}
+
+\begin{align*}
+\mathbf{vw}'\mathbf{vw}' &= \begin{bmatrix} 
+    v_1w_1 & v_1w_2 & \dots & v_1w_r \\ 
+    v_2w_1 & v_2w_2 & \ddots & v_2w_r \\ 
+    \vdots & \vdots & \ddots & \vdots \\ 
+    v_rw_r & v_rw_2 & \dots & v_rw_r 
+\end{bmatrix} 
+\begin{bmatrix} 
+    v_1w_1 & v_1w_2 & \dots & v_1w_r \\ 
+    v_2w_1 & v_2w_2 & \ddots & v_2w_r \\ 
+    \vdots & \vdots & \ddots & \vdots \\ 
+    v_rw_r & v_rw_2 & \dots & v_rw_r 
+\end{bmatrix} \\
+&= \begin{bmatrix} 
+    v_1w_1 \sum\limits_{\substack{i=1}}^{r} v_iw_i & v_1w_2 \sum\limits_{\substack{i=1}}^{r} v_iw_i & \dots & v_1w_r \sum\limits_{\substack{i=1}}^{r} v_iw_i \\ 
+    v_2w_1 \sum\limits_{\substack{i=1}}^{r} v_iw_i & v_2w_2 \sum\limits_{\substack{i=1}}^{r} v_iw_i & \ddots & v_2w_r \sum\limits_{\substack{i=1}}^{r} v_iw_i \\ 
+    \vdots & \vdots & \ddots & \vdots \\ 
+    v_rw_r \sum\limits_{\substack{i=1}}^{r} v_iw_i & v_rw_2 \sum\limits_{\substack{i=1}}^{r} v_iw_i & \dots & v_rw_r \sum\limits_{\substack{i=1}}^{r} v_iw_i 
+\end{bmatrix} \\
+&= (\sum_{i=1}^{r}v_iw_i)\mathbf{vw}' \\
+&= \mathbf{v}'\mathbf{w}\mathbf{vw}'
+\end{align*}
+
+\begin{align*}
+\Rightarrow (I+\alpha\mathbf{vw}')(I - \displaystyle (\frac{\alpha}{1+\alpha\mathbf{v}'\mathbf{w}})\mathbf{vw}') &= I + \alpha\mathbf{vw}' - \displaystyle (\frac{\alpha}{1+\alpha\mathbf{v}'\mathbf{w}})\mathbf{vw}' - \frac{\alpha^2}{1+\alpha\mathbf{v}'\mathbf{w}}\mathbf{vw}'\mathbf{vw}' \\
+&= I + \displaystyle \frac{(\alpha \mathbf{vw}')(\alpha\mathbf{v}'\mathrm{w}) - \alpha^2 \mathbf{vw}'\mathbf{vw}'}{1+\alpha\mathbf{v}'\mathrm{w}} \\
+&= I \ \ \mathrm{Since} \  \mathbf{vw}'\mathbf{vw}' = \mathbf{v}'\mathbf{w}\mathbf{vw}'
+\end{align*}
+
+\begin{center}
+Therefore $(I+\alpha\mathbf{vw}')^{-1} = I - \displaystyle (\frac{\alpha}{1+\alpha\mathbf{v}'\mathbf{w}})\mathbf{vw}'$
+\end{center}
+
+### (b)
+$$\displaystyle (A + \mathbf{ww'})^{-1} = A^{-1} - \frac{A^{-1}\mathbf{ww'}A^{-1}}{1 + \mathbf{w'}A^{-1}\mathbf{w}}$$
+
+### (c)
+
+#### (i) $(X_{1}'X_{1})^{-1}$ in terms of $(X'X)^{-1}$ and $\mathbf{w}$
+
+\
+
+\begin{center}
+$X_{1}'X_{1} = \begin{bmatrix}  X' & \mathbf{w}\end{bmatrix} \begin{bmatrix}  X' \\ \mathbf{w}\end{bmatrix} = X'X + \mathbf{ww}'$ \\
+Denote $(X'X)$ as $A$, by the formula we get in \textbf{(b)}, \\ 
+$(X_{1}'X_{1})^{-1} = (X'X + \mathbf{ww}')^{-1} = \displaystyle (X'X)^{-1} - \frac{(X'X)^{-1}\mathbf{ww'}(X'X)^{-1}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}$.
+\end{center}
+
+#### (ii) $\hat{\beta}_1$ in terms of $\hat{\beta}$
+
+\
+
+\begin{center}
+$X_{1}'\boldsymbol{y}_{1} = \begin{bmatrix}  X' & \mathbf{w}\end{bmatrix} \begin{bmatrix}  \boldsymbol{y} \\ y_{n+1}\end{bmatrix} = X'\boldsymbol{y} + \mathbf{w}y_{n+1}$
+\end{center}
+\begin{align*}
+\hat{\beta}_{1} &= (X_{1}'X_{1})^{-1}X_{1}'\boldsymbol{y}_{1} = [\displaystyle (X'X)^{-1} - \frac{(X'X)^{-1}\mathbf{ww'}(X'X)^{-1}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}](X'\boldsymbol{y} + \mathbf{w}y_{n+1}) \\
+&= (X'X)^{-1}X'\boldsymbol{y} + (X'X)^{-1}\mathbf{w}y_{n+1} - \frac{(X'X)^{-1}\mathbf{ww'}(X'X)^{-1}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}X'\boldsymbol{y} - \frac{(X'X)^{-1}\mathbf{ww'}(X'X)^{-1}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}\mathbf{w}y_{n+1} \\
+&= [\displaystyle I - \frac{(X'X)^{-1}\mathbf{ww'}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}]\hat{\beta} +  [(X'X)^{-1} - \frac{(X'X)^{-1}\mathbf{ww'}(X'X)^{-1}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}]\mathbf{w}y_{n+1} \\
+&= [\displaystyle I - \frac{(X'X)^{-1}\mathbf{ww'}}{1 + \mathbf{w'}(X'X)^{-1}\mathbf{w}}][\hat{\beta} + (X'X)^{-1}\mathbf{w}y_{n+1}]
+\end{align*}
+
+## 6.16
+```{r 6.16 - 1}
+# import data
+data <- read.table("/Users/ziyiou/study database/大三上/STA3001/assignment/homework4/recovery.txt", 
+                    sep = "", header = TRUE)
+
+x1 <- data$x1
+x2 <- data$x2
+y <- data$y
+
+mod = lm(y~x1+x2)
+summary(mod)
+```
+From the above output we can see that the p-value for the intercept is large than 0.05, indicating the intercept is not significantly differ from zero. Therefore, we change the regression model from $y = \beta_0 + \beta_1x_1 + \beta_2 x_2 + \epsilon$ to $y = \beta_1x_1 + \beta_2 x_2 + \epsilon$
+
+```{r 6.16 - 2}
+mod_no_intercept <- lm(y ~ 0 + x1 + x2)
+summary(mod_no_intercept)
+```
+From the above output we can see that the p-value of each coefficient is smaller than the significance level $\alpha=0.05$, which means we have the appropriate model here. And we can also see that the adjusted $R^2$ has been improved from 0.1699 to 0.7128.
+
+\textbf{Model violations check:}
+
+Here we check whether this model violates the Gauss-Markov assumptions.
+
+```{r 6.16 - 3}
+# Regression diagnostics
+par(mfrow = c(1,2))
+
+plot(y ~ x1, data = data, pch = 16, col = "blue", main = "y vs x1")
+abline(lm(y ~ x1, data = data), col = "blue")
+
+plot(y ~ x2, data = data, pch = 16, col = "red", main = "y vs x2")
+abline(lm(y ~ x2, data = data), col = "red")
+
+par(mfrow = c(2,2))
+plot(mod_no_intercept)
+```
+
+From the y vs $x_1$ and y vs $x_2$ plot we can see that y increases as $x_1$ increases, y decreases as $x_2$ increases, which is in accordance with the model. From the Residuals vs Fitted values plot, we can see there is no distinctive pattern, therefore linearity exists. From the Q-Q Residuals plot, we can see that the tail part deviates from the straight line, so this model violates the normality assumption. From the scale-location plot, we can see a nearly horizontal red line and equally spreaded residuals, so we can conclude that the homoscedasticity assumption is satisfied.
+
+\textbf{Result interpretation:}
+
+The coefficient for $x_1$ 25.6506, indicating that the mean value of recovery time will increase by 25.6506 when the log of the drug dose are increased by 1, with the blood pressure held constant. The coefficient for $x_2$ -0.4326, indicating that the mean value of recovery time will decrease by 0.4326 when the blood pressure are increased by 1, with the log of the drug dose held constant.
+
+\textbf{Transformation on response:}
+
+\textbf{Log transformation:}
+
+```{r 6.16 - 4}
+log_mod = lm(log(y)~0+x1+x2)
+summary(log_mod)
+par(mfrow=c(2,2))
+plot(log_mod)
+```
+Here we apply log transformation on the response, and the adjusted $R^2$ has been improved from 0.7128 to 0.9396. 
+
+\textbf{Square root transformation:}
+
+```{r 6.16 - 6}
+sqrt_mod = lm(sqrt(y)~0+x1+x2)
+summary(sqrt_mod)
+par(mfrow=c(2,2))
+plot(sqrt_mod)
+```
+Here we apply log transformation on the response, and the adjusted $R^2$ has been improved from 0.7128 to 0.8962. 
+
+\textbf{Reciprocal transformation:}
+```{r 6.16 - 8}
+reci_mod = lm(1/y~0+x1+x2)
+summary(reci_mod)
+par(mfrow=c(2,2))
+plot(reci_mod)
+```
+Here we apply log transformation on the response, and the adjusted $R^2$ has been lowered from 0.7128 to 0.674, so reciprocal transformation may not be a good approach.
+
+Overall, log transformation will be the most ideal one.
+
+## 7.1
+
+### (a)
+We start with model $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_4 + \epsilon$
+
+#### (i) Three regressors
+
+\
+
+$n=13,\  p = 4, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 8, \ F(0.95; \ 1,8) = 5.317655$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(110.7-71.8)/1}{71.8/8} = 4.334262$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(76.2-71.8)/1}{71.8/8} = 0.4902507$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(72.0 -71.8)/1}{71.8/8} = 0.02228412$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(72.2 -71.8)/1}{71.8/8} = 0.04456825$
+
+$x_3$ is the least significant variable, \textbf{drop $x_3$}.
+
+#### (ii) Two regressors
+
+\
+
+$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_4x_4 + \epsilon$
+
+$n=13,\  p = 3, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 9, \ F(0.95; \ 1,9) = 5.117355$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1303.3-72.0)/1}{72.0/9} = 153.9125$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(112.1-72.0)/1}{72.0/9} = 5.0125$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(86.9-72.0)/1}{72.0/9} = 1.8625$
+
+$x_4$ is the least significant variable, \textbf{drop $x_4$}.
+
+#### (iii) One regressor
+
+\
+
+$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$
+
+$n=13,\  p = 2, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 10, \ F(0.95; \ 1,10) = 4.964603$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1359.5 - 86.9)/1}{86.9/10} = 146.4442 > 4.964603$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1898.5-86.9)/1}{86.9/10} = 208.4695 > 4.964603$
+
+Since all remaining variables have significance level below $\alpha = 0.05$, we \textbf{stop} here.
+
+\textbf{The model result from automatic backward elimination is:} $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$
+
+### (b)
+
+We start with model $y = \beta_0 + \epsilon$
+
+#### (i) One regressor
+
+\
+
+$n=13,\  p = 1, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 11, \ F(0.90; \ 1,11) = 3.225202$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6-1898.5)/1}{1898.5/11} = 12.60263$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6-1359.5)/1}{1359.5/11} = 21.96035$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6 -2909.1)/1}{2909.1/11} = 4.403252$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6 -1325.8)/1}{1325.8/11} = 22.79816$
+
+$x_4$ is the most significant variable, \textbf{add $x_4$}.
+
+#### (ii) Two regressors
+
+\
+
+$y = \beta_0 + \beta_4x_4 + \epsilon$
+
+$n=13,\  p = 2, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 10, \ F(0.90; \ 1,10) = 3.285015$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-112.1)/1}{112.1/10} = 108.2694$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-1303.3)/1}{1303.3/10} = 0.1726387$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-263.6)/1}{263.6/10} = 40.2959$
+
+$x_1$ is the most significant variable, \textbf{add $x_1$}.
+
+#### (iii) One regressor
+
+\
+
+$y = \beta_0 + \beta_1x_1 + \beta_4x_4 + \epsilon$
+
+$n=13,\  p = 3, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 9, \ F(0.90; \ 1,9) = 3.360303$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(112.1-72.0)/1}{72.0/9} = 5.0125$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(112.1-76.2)/1}{76.2/9} = 4.240157$
+
+$x_2$ is the most significant variable, \textbf{add $x_2$}.
+
+#### (iv) Four regressors
+
+\
+
+$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_4x_4 + \epsilon$
+
+$n=13,\  p = 4, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 8, \ F(0.90; \ 1,8) = 3.457919$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(72.0-71.8)/1}{71.8/8} = 0.02228412 < 3.457919$
+
+Since no additional variables meet the preset significance level $\alpha = 0.10$, we \textbf{stop} here.
+
+\textbf{The model result from automatic forward selection is:} $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_4x_4 + \epsilon$
+
+### (c)
+
+We start with model $y = \beta_0 + \epsilon$
+
+#### (i) Step 1
+
+\
+
+$n=13,\  p = 1, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 11, \ F(0.90; \ 1,11) = 3.225202$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6-1898.5)/1}{1898.5/11} = 12.60263$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6-1359.5)/1}{1359.5/11} = 21.96035$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6 -2909.1)/1}{2909.1/11} = 4.403252$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6 -1325.8)/1}{1325.8/11} = 22.79816$
+
+$x_4$ is the most significant variable, \textbf{add $x_4$}.
+
+Then we reassess all variables for $y=\beta_0 + \beta_4x_4 + \epsilon$:
+
+$n=13,\  p = 1, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 11, \ F(0.90; \ 1,11) = 3.225202$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(4073.6 -1325.8)/1}{1325.8/11} = 22.79816 > 3.225202$
+
+We keep $\beta_4$.
+
+#### (ii) Step 2
+
+\
+
+$y = \beta_0 + \beta_4x_4 + \epsilon$
+
+$n=13,\  p = 2, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 10, \ F(0.90; \ 1,10) = 3.285015$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-112.1)/1}{112.1/10} = 108.2694$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-1303.3)/1}{1303.3/10} = 0.1726387$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-263.6)/1}{263.6/10} = 40.2959$
+
+$x_1$ is the most significant variable, \textbf{add $x_1$}.
+
+Then we reassess all variables for $y=\beta_0 + \beta_1x_1 + \beta_4x_4 + \epsilon$:
+
+$n=13,\  p = 2, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 10, \ F(0.90; \ 1,10) = 3.285015$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1325.8-112.1)/1}{112.1/10} = 108.2694 > 3.285015$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1898.5-112.1)/1}{112.1/10} = 159.3577 > 3.285015$
+
+We keep $\beta_1$ and $\beta_4$.
+
+#### (iii) Step 3
+
+\
+
+$y = \beta_0 + \beta_1x_1 + \beta_4x_4 + \epsilon$
+
+$n=13,\  p = 3, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 9, \ F(0.90; \ 1,9) = 3.360303$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(112.1-72.0)/1}{72.0/9} = 5.0125$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(112.1-76.2)/1}{76.2/9} = 4.240157$
+
+$x_2$ is the most significant variable, \textbf{add $x_2$}.
+
+Then we reassess all variables for $y=\beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_4x_4 + \epsilon$:
+
+$n=13,\  p = 3, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 9, \ F(0.90; \ 1,9) = 3.360303$
+
+For $x_1$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1303.3-72.0)/1}{72.0/9} = 153.9125 > 3.360303$
+
+For $x_2$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(112.1-72.0)/1}{72.0/9} = 5.0125 > 3.360303$
+
+For $x_4$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(86.9-72.0)/1}{72.0/9} = 1.8625 < 3.360303$
+
+We keep $\beta_1$ and $\beta_2$, remove $\beta_4$.
+
+#### (iv) Step 4
+
+\
+
+$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$
+
+$n=13,\  p = 3, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 1, \ \mathrm{df_{full}}=n-p-1 = 9, \ F(0.90; \ 1,9) = 3.360303$
+
+For $x_3$, $F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(86.9-72.7)/1}{72.2/9} = 1.770083 < 3.360303$
+
+Since no additional variables meet the preset significance level $\alpha = 0.10$, we \textbf{stop} here.
+
+\textbf{The model result from automatic stepwise regression is:} $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$
+
+### (d)
+Suppose the full regression model have $k$ regressors in total.
+
+$$C_p = \displaystyle \frac{RSS_{p}}{S^2} - n + 2(p+1)=\frac{(n-k-1)RSS_{p}}{RSS} - n + 2(p+1)$$
+\textbf{Model found in (a):}
+
+$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \epsilon$$
+
+$$C_p = \displaystyle \frac{(13-4-1) \times 86.9}{71.8} - 13 + 2\times (2+1) = 2.682451$$
+\textbf{Model that includes all four $x$'s:}
+
+$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_4 + \epsilon$$
+$$C_p = \displaystyle \frac{(13-4-1) \times 71.8}{71.8} - 13 + 2\times (4+1) = 5$$
+A small value of $C_p$ means that the model is relatively precise, therefore the model we found in (a) is better than the model that includes all four $x$'s.
+
+### (e)
+There may exist multicollinearity between $x_2$ and $x_4$. In that case including both $x_2$ and $x_4$ in the same model may introduce redundancy without adding much additional information.
+
+### (f)
+Full model: $y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 + \beta_4x_4 + \epsilon$
+
+Reduced model: $y = \beta_0 + \beta_2x_2 + \beta_4x_4 + \epsilon$
+
+Here we use significance level $\alpha=0.05$
+
+$n=13,\  p = 4, \  \mathrm{df_{reduced}-\mathrm{df_{full}}} = 2, \ \mathrm{df_{full}}=n-p-1 = 8, \ F(0.95; \ 2,8) = 4.45897$
+
+$H_0: \beta_1 = \beta_3 = 0$, $H_1: H_0$ is not true.
+
+$F = \displaystyle \frac{(RSS_{\mathrm{reduced}}-RSS_{\mathrm{full}})/\mathrm{(df_{reduced}-\mathrm{df_{full}}})}{RSS_{\mathrm{full}}/\mathrm{df_{full}}} = \frac{(1303.3 -71.8)/2}{71.8/8} = 68.60724 > 4.45897$
+
+Under significance level $\alpha=0.05$, we reject null hypothesis.
+
+## 7.5
+```{r 7.5 - 1}
+# import data
+data <- read.table("/Users/ziyiou/study database/大三上/STA3001/assignment/homework4/rainseeding.txt", 
+                    sep = "", header = TRUE)
+
+seed <- data$Seed
+time <- data$time
+suit <- data$suit
+echocov <- data$Echocov
+echomot <- data$echomot
+wet <- data$wet
+y <- data$rain
+
+df <- data.frame(seed, time, suit, echocov, echomot, wet, y)
+```
+
+\textbf{Model Selection:}
+
+#### (i) Forward Selection
+
+\
+
+Here we adopt the forward selection to select the model and use AIC as criterion. Model with least AIC will be selected. 
+
+```{r 7.5 forward}
+empty_model <- lm(y ~ 1, data = df) # Fit an empty model
+
+forward_model <- step(empty_model, direction = "forward", scope = list(lower = ~1,upper = ~seed+time+suit+echocov+echomot+wet))
+summary(forward_model)
+```
+
+The final model is $y = \beta_0 + \beta_1 \cdot \mathrm{Time} + \epsilon$
+
+#### (ii) Backward Elimination
+
+\
+
+Here we adopt the backward elimination to select the model and use AIC as criterion. Model with least AIC will be selected. 
+
+```{r 7.5 backward}
+full_model <- lm(y ~ seed + time + suit + echocov + echomot + wet, data = df)
+backward_model <- step(full_model, direction = "backward")
+summary(backward_model)
+```
+
+The final model is $y = \beta_0 + \beta_1 \cdot \mathrm{Time} + \epsilon$
+
+#### (iii) Stepwise Regression
+
+\
+
+Here we adopt the stepwise regression to select the model and use AIC as criterion. Model with least AIC will be selected. 
+
+```{r 7.5 - stepwise}
+full_model <- lm(y ~ seed + time + suit + echocov + echomot + wet, data = df)
+stepwise_model <- step(full_model, direction = "both")
+summary(stepwise_model)
+```
+
+The final model is $y = \beta_0 + \beta_1 \cdot \mathrm{Time} + \epsilon$
+
+\textbf{Conclusion:}
+
+All of three selection methods give the same final model $y = \beta_0 + \beta_1 \cdot \mathrm{Time} + \epsilon$, so time is the important covariate, and the cloud seeing is not effective in the adjusted model.
+
+```{r 7.5 conclusion}
+selected_model <- stepwise_model
+summary(full_model)
+summary(selected_model)
+```
+
+The adjusted $R^2$ of the original model is 0.1678 while the adjusted $R^2$ of the selected model is 0.212, showing an improvement of model complexity and the ability to explain the variation in the data.
+
+\textbf{Unusual cases check:}
+
+```{r 7.5 - 3}
+# influential points
+leverage <- hatvalues(selected_model)
+influence_stats <- influence.measures(selected_model)
+
+high_leverage_cases <- which(leverage > 2 * mean(leverage))
+influential_cases <- which(influence_stats$cutoff > 0.2)
+
+# identify outliers
+cook_dist <- cooks.distance(selected_model)
+outliers <- which(cook_dist > 4 / nrow(df))
+cat("Outliers identified by Cook's distance:", outliers, "\n")
+```
+
+
+```{r 7.5 - sen}
+# sensitivity analysis
+model_without_outliers <- lm(y ~ time, data = df[-outliers, ])
+summary(selected_model)
+summary(model_without_outliers)
+
+par(mfrow=c(2,2))
+plot(selected_model)
+
+par(mfrow=c(2,2))
+plot(model_without_outliers)
+```
+
+After deleting unusual cases (outliers), the adjusted $R^2$ has been improved from 0.212 to 0.2808. And from the QQ plot we can see that the most standardized residuals lies on the straight line, while there are couples of data points largely deviate the straight line before deleting outliers. So the improved model better satisfies normality assumption.

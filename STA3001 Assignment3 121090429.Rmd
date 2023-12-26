@@ -1,0 +1,841 @@
+---
+title: "STA3001 Assignment3 121090429"
+author: "Ziyi Ou"
+date: "2023-11-15"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## 4.1
+\[
+x' = \begin{bmatrix}
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
+\end{bmatrix}
+\]
+
+\[
+X' = \begin{bmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
+\end{bmatrix}
+\]
+
+\[
+X'X = \begin{bmatrix} n & \sum_{i=1}^{10} x_i \\ \sum_{i=1}^{10} x_i & \sum_{i=1}^{10} x_i^2  \end{bmatrix} 
+=  \begin{bmatrix} 10 & 55 \\ 55 & 385\end{bmatrix}
+\]
+
+For a $2 \times 2$ invertible matrix \[ A = \begin{bmatrix} a &b \\ c& d\end{bmatrix},\] \[
+A^{-1} = \frac{1}{ad-bc} \begin{bmatrix} d & -b \\ -c & a\end{bmatrix}.
+\]
+
+Therefore, \[
+(X'X)^{-1} = \frac{1}{10\times385 - 55\times55} \begin{bmatrix} 385 & -55 \\ -55 & 10 \end{bmatrix} = \frac{1}{825} \begin{bmatrix} 385 & -55 \\ -55 & 10 \end{bmatrix} =  \begin{bmatrix} \frac{7}{15} & -\frac{1}{15} \\ -\frac{1}{15} & \frac{2}{165} \end{bmatrix}
+\]
+
+Suppose $\epsilon_t \sim N(0,\sigma^2)$, then $V(y) = \sigma^2 I$. 
+
+\[ 
+V(\hat{\beta}) = \sigma^2 (X'X)^{-1} = \begin{bmatrix} \frac{7}{15}\sigma^2 & -\frac{1}{15} \sigma^2 \\ -\frac{1}{15}\sigma^2 & \frac{2}{165}\sigma^2 \end{bmatrix}
+\]
+
+\begin{center}
+$V(\hat{\beta_0}) = [\sigma^2 (X'X)^{-1}]_{(1,1)} = \frac{7}{15}\sigma^2, V(\hat{\beta_1}) = [\sigma^2 (X'X)^{-1}]_{(2,2)} = \frac{2}{165}\sigma^2.$
+\end{center}
+
+## 4.5
+\begin{center}
+Know that $\hat{\sigma}^2 = s^2 = 3$, the corvariance matrix of $\hat{\beta}$ is $V(\hat{\beta}) = \sigma^2(X'X)^{-1}$, therefore $\hat{V}(\hat{\beta}) = s^2(X'X)^{-1}$
+\end{center}
+
+### (a)
+\begin{center}
+$\hat{V}(\hat{\beta_1}) = s^2[(X'X)^{-1}]_{(2,2)} = 3 \times 6.0 = 18.0$
+\end{center}
+
+### (b)
+\begin{center}
+$\hat{\mathrm{Cov}}(\hat{\beta_1}.\hat{\beta_3}) = s^2[(X'X)^{-1}]_{(2,4)} = 3 \times 0.4 = 1.2$
+\end{center}
+
+### (c)
+\begin{center}
+$\hat{V}(\hat{\beta_3}) = s^2[(X'X)^{-1}]_{(4,4)} = 3 \times 3.0 = 9.0$ \\
+
+$\hat{\mathrm{Corr}}(\hat{\beta_1}.\hat{\beta_3}) = \displaystyle \frac{\hat{\mathrm{Cov}}(\hat{\beta_1}.\hat{\beta_3})}{\sqrt{\hat{V}(\hat{\beta_1})}\sqrt{\hat{V}(\hat{\beta_3})}} = \frac{1.2}{\sqrt{18\times9}} = \frac{1.2}{9\sqrt{2}} = \frac{\sqrt{2}}{15}$
+\end{center}
+
+### (d)
+\begin{center}
+$\hat{V}(\hat{\beta_1} - \hat{\beta_3}) = \hat{V}(\hat{\beta_1}) - 2\cdot \hat{\mathrm{Cov}}(\hat{\beta_1}.\hat{\beta_3}) + \hat{V}(\hat{\beta_3}) = 18 - 2\times1.2 + 9 = 24.6$
+\end{center}
+
+## 4.6
+### (a)
+\begin{center}
+$\hat{V}(\hat{\beta_2}) = s^2 [(X'X)^{-1}]_{(3,3)} = 2 \times 2 = 4$
+\end{center}
+
+### (b)
+Here we apply t test. 
+
+$p = 2, \  n - p - 1 = 15 - 2- 1 = 12.$ 
+
+We define test statistics $T_0 = \displaystyle \frac{\hat{\beta_2} - \beta_2}{\hat{se}(\hat{\beta}_2)} = \frac{15 - 0}{\sqrt{4}} = 7.5 \sim t(13)$ 
+
+Use significance level $\alpha = 0.05$. From the t-distribution table, we know that $t(0.975;12) = 2.179$ 
+
+Since $|T_0| = 7.5 > 2.179$, $T_0$ lies in the rejection region, we reject the null hypothesis that $\beta_2 = 0$ at significance level $\alpha = 0.05$.
+
+
+### (c)
+$\hat{Cov}(\hat{\beta_1},\hat{\beta_2}) =  s^2[(X'X)^{-1}]_{(2,3)} = 2 \times (-0.25) = -0.5$
+
+### (d)
+#### (i) $t$ ratio:
+
+\
+
+Define the test statistics $T_0 = \displaystyle \frac{(\hat{\beta_1} - \hat{\beta_2})-(\beta_1 - \beta_2)}{se(\hat{\beta_1} - \hat{\beta_2})}$.
+
+$se(\hat{\beta_1} - \hat{\beta_2}) = \sqrt{V(\hat{\beta_1} - \hat{\beta_2})} = \sqrt{\hat{V}(\hat{\beta_1}) - 2\cdot \hat{\mathrm{Cov}}(\hat{\beta_1}.\hat{\beta_2}) + \hat{V}(\hat{\beta_2})} = \sqrt{1 - 2 \times (-0.25) + 4 } = \sqrt{5.5} = 2.345208$.
+
+Therefore $T_0 = \displaystyle \frac{12-15}{2.345208} = -1.279204 \sim t(12)$
+
+Use significance level $\alpha = 0.05$. From the t-distribution table, we know that $t(0.975;12) = 2.179$
+
+Since $| T_0 |= 1.279204 < 2.179$, $T_0$ is not in the rejection region, we accept the null hypothesis.
+
+#### (ii) 95\% confidence interval: 
+
+\
+
+The 95\% confidence interval for $\beta_1 - \beta_2$ is $(\hat{\beta}_1 - \hat{\beta}_2) \ \pm t(0.975,12)\cdot se(\hat{\beta_1} - \hat{\beta_2}) = [-8.110208, 2.110208]$. 
+
+Since $\beta_1 - \beta_2 = 0 \in 95\% \ \mathrm{CI}$, we accept the null hypothesis that $\beta_1 = \beta_2$
+
+### (e)
+
+Know that $s^2 = \displaystyle \frac{\mathrm{RSS}}{n-p-1}$, so $\mathrm{RSS} = (n-p-1)s^2 = 12 \times 2 = 24.$
+
+$\mathrm{SSReg} = \mathrm{SST - RSS} = 120 - 24 = 96$.
+
+The ANOVA table is as follows:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccc}
+\hline
+\textbf{Source} & \textbf{SS} & \textbf{d.f.} & \textbf{MS = SS/df} \\
+\hline
+Regression line & 96 & 2 & 48\\
+Error & 24 & 12 & 2 \\
+Total & 120 & 14 & - \\
+\hline
+\end{tabular}
+\caption{MLR ANOVA Table for 4.6 (e)}
+\end{table}
+
+$R^2 = \displaystyle \frac{SSReg}{SST} = \frac{96}{120}\times100\% = 80%$.
+
+So 80\% of variation in $y$ is explained by the model.
+
+
+## 4.7
+### (a)
+From the table we know that SSReg = 504541, TSS = 541119. 
+
+$R^2 = \displaystyle \frac{\mathrm{SSReg}}{\mathrm{TSS}} = \frac{504541}{541119} = 0.9324 = 93.24\%$.
+
+### (b)
+Here we apply F test to solve the problem.
+
+From the table we can know that $p = 3, n - 1 = 27$. So $n - p -1 = 27 -3 = 24$.
+
+RSS = TSS - SSReg = 36578.
+
+$$ \mathrm{MSReg} = \displaystyle \frac{\mathrm{SSReg}}{p} = \frac{504541}{3} = 168180.3333 $$.
+$$ \mathrm{MSE} = \displaystyle\frac{\mathrm{RSS}}{n-p-1} = \frac{36578}{24} = 1524.0833$$
+
+Define the test statistics $F_{\mathrm{obs}} = \displaystyle \frac{\mathrm{MSReg}}{\mathrm{MSE}} = \frac{16180.3333}{1524.0833} = 10.6164 \sim F(3,24)$ 
+
+From the F-distribution table, we know that $F(0.95; \ 3,24) = 3.01$. 
+
+Since $F_{\mathrm{obs}} = 10.6164 > 3.01$, we reject the null hypothesis. Not all three regression coefficients are zero.
+
+### (c)
+#### (i) CI of the coefficient of "taxes"
+
+\
+The null hypothesis is: $H_0: \beta_1 = 0$, the alternative hypothesis is: $H_1: \beta_1 \neq 0$.
+
+$t_{\mathrm{obs}} = \displaystyle \frac{\hat{\beta_1} - \beta_1}{se(\hat{\beta_1})} = \frac{0.18966}{0.05623} = 3.37293 \sim t(24)$ \
+From the t-distribution table, $t(0.975;24)= 2.064$. \
+Since $t_{\mathrm{obs}} = 3.37293 > 2.064$, we reject the null hypothesis. 
+
+We can't simplify the model by dropping "taxes".
+
+#### (ii) CI of the coefficient of "baths"
+
+\
+
+The null hypothesis is: $H_0: \beta_2 = 0$, the alternative hypothesis is: $H_1: \beta_2 \neq 0$.
+
+$t_{\mathrm{obs}} = \displaystyle \frac{\hat{\beta_2} - \beta_2}{se(\hat{\beta_2})} = \frac{81.87}{47.82} = 1.71205 \sim t(24)$ \
+From the t-distribution table, $t(0.975;24)= 2.064$. \
+Since $t_{\mathrm{obs}} = 1.71205 < 2.064$, we accept the null hypothesis. 
+
+We can simplify the model by dropping "baths".
+
+
+## 4.8
+### (a)
+$$ \mathrm{SSReg} = 500074, \mathrm{TSS} = 541119$$. 
+
+$$ \Rightarrow R_{r}^2 = \displaystyle \frac{\mathrm{SSReg}}{\mathrm{TSS}} = \frac{500074}{541119} = 0.9241 = 92.41\% $$.
+
+### (b)
+Here we apply F test to solve the problem.
+
+From the table we can know that $p = 2, n - 1 = 27$. So $n - p -1 = 27 -2 = 25$.
+
+RSS = TSS - SSReg = 541119 - 500074 = 41045
+
+$$ \mathrm{MSReg} = \displaystyle \frac{\mathrm{SSReg}}{p} = \frac{500074}{2} = 250037 $$.
+$$ \mathrm{MSE} = \displaystyle\frac{\mathrm{RSS}}{n-p-1} = \frac{41045}{25} = 1641.8$$
+Define the test statistics $F_{\mathrm{obs}} = \displaystyle \frac{\mathrm{MSReg}}{\mathrm{MSE}} = \frac{250037}{1641.8} = 152.2944 \sim F(2,25)$ 
+
+From the F-distribution table, we know that $F(0.95; \ 2,25) = 3.39$. 
+
+Since $F_{\mathrm{obs}} = 10.6164 > 3.39$, we reject the null hypothesis. Not both regression coefficients are zero.
+
+### (c)
+The null hypothesis is: $H_0: \beta_1 = 0$, the alternative hypothesis is: $H_1: \beta_1 \neq 0$.
+
+$t_{\mathrm{obs}} = \displaystyle \frac{\hat{\beta_1} - \beta_1}{se(\hat{\beta_1})} = \frac{0.24237}{0.04884} = 4.96253 \sim t(25)$ \
+From the t-distribution table, $t(0.975;25)= 2.060$. \
+Since $t_{\mathrm{obs}} = 4.96253 > 2.060$, we reject the null hypothesis. 
+
+We can't simplify the model by dropping "taxes".
+
+### (d)
+The fact that the regression coefficients for taxes and square feet are different in the current exercise compared to Exercise 4.7 indicates that these coefficients are sensitive to changes in the model selection. 
+
+## 4.9
+### (a)
+We use R to find $(X'X)^{-1}$.
+```{r 4.9 (a) - 1}
+# find XTX inverse
+XTX = matrix(c(30, 2108, 5414, 2108, 152422, 376562, 5414, 376562, 1015780),
+             nrow = 3, ncol = 3)
+
+XTX_inverse = solve(XTX)
+print(XTX_inverse)
+
+
+# least squares estimates of beta_hat
+XTy = matrix(c(5263,346867,921939),nrow = 3, ncol = 1)
+yTy = 1148317
+
+beta_hat = XTX_inverse %*% XTy
+print(beta_hat)
+```
+
+
+So we have: $\hat{\beta}_0 = 885.161109, \ \hat{\beta}_1 = -6.570830, \ \hat{\beta}_2 = -1.374312$.
+
+Here we use the sample variance to estimate the variance of $\epsilon_i$.
+
+$\hat{\sigma}^2 = \displaystyle \frac{1}{n-p-1}(y - X\hat{\beta})'(y - X\hat{\beta}) = \frac{1}{27}(y'y - y'X\hat{\beta}-\hat{\beta}'X'y + \hat{\beta}'X'X\hat{\beta})$
+
+$\hat{V}(\hat{\beta}) = \hat{\sigma}^2(X'X)^{-1}, \ \hat{se}(\hat{\beta}) = \sqrt{\hat{V}(\hat{\beta})}$
+
+```{r 4.9 (a) - 2}
+# standard errors of beta_hat
+n = 30
+p = 2
+sigma2_hat = 1/(n-p-1)*(yTy - t(XTy)%*%beta_hat - t(beta_hat)%*%XTy 
+                   + t(beta_hat)%*%XTX%*%beta_hat)
+
+var_hat_beta_hat = as.numeric(sigma2_hat) * XTX_inverse
+
+sd_hat_beta_hat = sqrt(var_hat_beta_hat)
+print(sd_hat_beta_hat)
+```
+Taking the elements of the diagonal, we have: $\hat{se}(\hat{\beta_0}) = 61.75158$, $\hat{se}(\hat{\beta_1}) =0.5831877$, $\hat{se}(\hat{\beta_2}) = 0.1943089$.
+
+### (b)
+Let $t_0, t_1, t_2$ denote the test statistics for testing $\beta_0 = 0$, $\beta_1 = 0$, $\beta_2 = 0$ respectively.
+
+Know that $t_i = \displaystyle \frac{\hat{\beta}_i-\beta_i}{\hat{se}(\hat{\beta})}, \ i = 0,1,2$. Each test statistics follows t distribution with degree of freedom $n-p-1 = 30-2-1 = 27$. Here we use significance level 0.05.
+
+From the t-distribution table, $t(0.975;25)= 2.052$. 
+
+$t_0 = \displaystyle \frac{885.161109}{61.75158} = 14.33423 > 2.052$, reject the null hypothesis that $\beta_0 = 0$.
+
+$t_1 = \displaystyle \frac{−6.570830}{0.5831877} = -11.26709 < -2.052$, reject the null hypothesis that $\beta_1 = 0$.
+
+$t_2 = \displaystyle \frac{-1.374312}{0.1943089} = -7.07282 < -2.052$, reject the null hypothesis that $\beta_2 = 0$.
+
+## 4.10
+### (a)
+The regression equation is $y_i = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \epsilon_i$. 
+
+The estimated regression equation is $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1x_{i1} + \hat{\beta}_2x_{i2} = 3.452613 + 0.496005\times x_{i1}+0.009191\times x_{i2}$.
+
+We use R to find the standard errors of the regression coefficients.
+
+```{r 4.10 (a)}
+XTX = matrix(c(15, 3626, 44428, 3626, 1067614, 11419181, 44428, 11419181,
+               139063428), nrow = 3, ncol = 3)
+
+XTX_inverse = matrix(c(1.2463484, 2.1296642*10^(-2), -4.1567125*10^(-4), 
+                       0, 7.7329030*10^(-6), -7.0302518*10^(-7),
+                       0,0,1.9771851*10^(-7)),
+                     nrow = 3, ncol = 3)
+
+XTy = matrix(c(2259, 647107, 7096619), nrow = 3, ncol = 1)
+
+yTy = 394107
+
+beta_hat = matrix(c(3.452613, 0.496005, 0.009191), nrow = 3, ncol = 1)
+
+n = 15
+p = 2
+
+sigma2_hat = 1/(n-p-1)*(yTy - t(XTy)%*%beta_hat - t(beta_hat)%*%XTy 
+                   + t(beta_hat)%*%XTX%*%beta_hat)
+
+var_hat_beta_hat = as.numeric(sigma2_hat) * XTX_inverse
+
+sd_hat_beta_hat = sqrt(var_hat_beta_hat)
+print(sd_hat_beta_hat)
+```
+
+Taking the elements of the diagonal, we have: $\hat{se}(\hat{\beta_0}) = 2.4308444$, $\hat{se}(\hat{\beta_1}) = 0.006054924$, $\hat{se}(\hat{\beta_2}) = 0.0009681911$.
+
+### (b)
+Know that the (1,1) entry of matrix $X'X$ is $n$, therefore $n = 15, n - p - 1 = 15 - 2 -1 = 12$.
+
+Let $t_0, t_1, t_2$ denote the test statistics for testing $\beta_0 = 0$, $\beta_1 = 0$, $\beta_2 = 0$ respectively.
+
+Know that $t_i = \displaystyle \frac{\hat{\beta}_i-\beta_i}{\hat{se}(\hat{\beta})}, \ i = 0,1,2$. Each test statistics follows t distribution with degree of freedom $n-p-1 = 12$. Here we use significance level 0.05.
+
+From the t-distribution table, $t(0.975;12)= 2.131$. 
+
+$t_0 = \displaystyle \frac{3.452613}{2.4308444} = 1.420335 < 2.131$, accept the null hypothesis that $\beta_0 = 0$.
+
+$t_1 = \displaystyle \frac{0.496005}{0.006054924} = 81.91763 > 2.131$, reject the null hypothesis that $\beta_1 = 0$.
+
+$t_2 = \displaystyle \frac{0.009191}{0.0009681911} = 9.492961  > 2.131$, reject the null hypothesis that $\beta_2 = 0$.
+
+Conclusion: The estimated regression equation should be changed into $\hat{y}_i = \hat{\beta}_1 x_{i1} + \hat{\beta}_2 x_{i2}$. It's a regression model without intercept.
+
+## 4.13
+### (a)
+In general, $\beta_j$ is the change in the mean value of $y$ associated with a one-unit change in the predictor variable $x_j$, with all other variables held constant. 
+
+$\beta_0$ is the mean value of $\boldsymbol{y}$ when all predictors ($x_1, x_2, x_3, x_4$) equal to zero.
+
+$\beta_1$ is the change in the mean of last year's sales (E[$\boldsymbol{y}$]) when the promotional expenditures ($x_1$) increased by 1 unit, with the number of active accounts ($x_2$), the number of competing brands ($x_3$) and the district potential ($x_4$) held constant.
+
+$\beta_4$ is the change in the mean of last year's sales (E[$\boldsymbol{y}$]) when the district potential ($x_4$) increased by 1 unit, with the promotional expenditures ($x_1$), the number of active accounts ($x_2$) and the number of competing brands ($x_3$) held constant.
+
+### (b)
+```{r 4.13 (b)-1}
+# data loading
+data <- read.table("/Users/ziyiou/study database/大三上/STA3001/assignment/homework3/sales.txt", 
+                    sep = "", header = TRUE)
+
+X1 <- data$X1
+X2 <- data$X2
+X3 <- data$X3
+X4 <- data$X4
+Y <- data$Y
+
+# regression model
+mod_un = lm(Y~X1 + X2 + X3 + X4) # unrestricted model
+summary(mod_un)
+```
+
+From the above output of R code, we get: $\hat{\beta}_0 = 177.2286, \ \hat{\beta}_1 = 2.1702, \ \hat{\beta}_2 = 3.5380, \ \hat{\beta}_3 = -22.1583, \ \hat{\beta}_4 =  0.2035$.
+
+```{r 4.13 (b)-2}
+n = nrow(data)
+p = 4
+e_hat = residuals(mod_un)
+sample_variance = sum(e_hat^2)/(n-p-1)
+print(sample_variance)
+```
+
+The estimate of $\sigma^2$ is $\hat{\sigma}^2 = s^2$, here $s^2 = \displaystyle \frac{1}{n-p-1}\sum_{i=1}^{n} \hat{e}_i^2$ is the sample variance.
+
+From the above output of R code, we get: $\hat{\sigma}^2 = 26.20728$
+
+### (c)
+In this question, we use significance level 0.05.
+
+#### (i)
+
+\
+$H_0 : \beta_4 = 0 \ ; \ H_1: \beta_4 \neq 0$ \
+Here we apply t-test. \
+$t_{\mathrm{obs}} = \displaystyle \frac{\hat{\beta}_4 - \beta_4}{\sqrt{\hat{V}(\hat{\beta_4})}} = \frac{0.2035}{0.3189} = 0.6381311 \sim t(10)$ \
+From the t-distribution table, we get: $t(0.975;10) = 2.228$. \
+Since  $t_{\mathrm{obs}} = 0.6381311 < 2.228$, we accept the null hypothesis that $\beta_4 = 0$.
+
+#### (ii)
+
+\
+$H_0 : \beta_3 = \beta_4 = 0 \ ; \ H_1: H_0 \  \mathrm{is\ not\ true }$ \
+Here we apply F-test. \
+We get the restricted model by R.
+
+```{r 4.13 (c)-ii}
+RSS_full = sum(e_hat^2)
+mod_re_ii = lm(Y~X1+X2)  # restricted model for ii
+e_hat_re_ii = residuals(mod_re_ii)
+RSS_re_ii = sum(e_hat_re_ii^2)
+l = 2
+F_obs = (RSS_re_ii - RSS_full)/l/(RSS_full/(n-p-1))
+```
+
+$\mathrm{RSS}_{\mathrm{full}} = 262.0728, \ \mathrm{RSS}_{\mathrm{re}} = 43967.92, \ l =2, \ n-p-1 = 10.$
+
+$F_{\mathrm{obs}} = \displaystyle \frac{(\mathrm{RSS}_{\mathrm{full}} - \mathrm{RSS}_{\mathrm{re}}) \ / \ l}{\mathrm{RSS}_{\mathrm{full}} \ / \ (n-p-1)} = 833.84931 \sim F(2,10)$
+
+By the F-distribution table, $F(0.95; \ 2,10) = 4.10$. 
+
+Since $F_{\mathrm{obs}} = 833.84931 > 4.10$, we reject the null hypothesis that $\beta_3 = \beta_4 = 0$.
+
+#### (iii)
+
+\
+$H_0 : \beta_2 = \beta_3 \ ; \ H_1: H_0 \  \mathrm{is\ not\ true }$ \
+Here we apply t-test. \
+
+```{r 4.13 (c)-iii}
+X0 <- rep(1, times = nrow(data))
+X1 <- data$X1
+X2 <- data$X2
+X3 <- data$X3
+X4 <- data$X4
+y <- data$Y
+
+X <- cbind(X0,X1,X2,X3,X4)
+
+yTy = t(y)%*%y
+XTy = t(X)%*%y
+XTX = t(X)%*%X
+XTX_inverse = solve(XTX)
+beta_hat = XTX_inverse %*% XTy
+
+# variance matrix of beta_hat
+sigma2_hat = 1/(n-p-1)*(yTy - t(XTy)%*%beta_hat - t(beta_hat)%*%XTy 
+                   + t(beta_hat)%*%XTX%*%beta_hat)
+
+var_hat_beta_hat = as.numeric(sigma2_hat) * XTX_inverse
+print(var_hat_beta_hat)
+```
+
+$\hat{se}(\hat{\beta}_2 - \hat{\beta}_3) = \sqrt{\hat{\mathrm{Var}}(\hat{\beta}_2) - 2 \mathrm{Cov}(\hat{\beta}_2 , \hat{\beta}_3) + \hat{\mathrm{Var}}(\hat{\beta}_3)} = \sqrt{0.011914171 - 2*0.006294961 + 0.297431952} = 0.5447533$.
+
+$t_{\mathrm{obs}} = \displaystyle \frac{\hat{\beta}_2 - \hat{\beta}_3}{\hat{se}(\hat{\beta}_2 - \hat{\beta}_3)} = \frac{3.5380 - (-22.1583)}{0.5447533} = 47.17053 \sim t(10)$
+
+From the t-distribution table, we get: $t(0.975;10) = 2.228$. \
+Since  $t_{\mathrm{obs}} = 47.17053 > 2.228$, we reject the null hypothesis that $\beta_2 = \beta_3$.
+
+#### (iv)
+
+\
+$H_0 : \beta_1 = \beta_2 = \beta_3 = \beta_4 = 0 \ ; \ H_1: H_0 \  \mathrm{is\ not\ true }$ \
+Here we apply F-test. \
+We get the restricted model by R.
+
+```{r 4.13 (c)-iv}
+summary(mod_un)
+```
+
+By the summary of unrestricted model, we get $F_{\mathrm{obs}} = 851.7 \sim F(4,10)$
+
+By the F-distribution table, $F(0.95; \ 4,10) = 3.48$. 
+
+Since $F_{\mathrm{obs}} = 851.7 > 3.48$, we reject the null hypothesis that $\beta_1 = \beta_2 = \beta_3 = \beta_4 = 0$.
+
+### (d)
+```{r 4.13 (d)-1}
+mod_re = lm(Y~X1+X2+X3)
+summary(mod_re)
+```
+
+By the summary of restricted model, we get: $\hat{\beta}_0 = 178.52062, \ \hat{\beta}_1 = 2.10555, \ \hat{\beta}_2 = 3.56240, \ \hat{\beta}_3 = -22.18799$.
+
+```{r 4.13 (d)-2}
+EX1 = mean(X1)
+EX2 = mean(X2)
+EX3 = mean(X3)
+
+print(EX1)
+print(EX2)
+print(EX3)
+```
+The expression for the expected sales is: \
+$\mathrm{E}(y) = \hat{\beta}_0 + \hat{\beta}_1 \mathrm{E}(x_1) + \hat{\beta}_2 \mathrm{E}(x_2) + \hat{\beta}_3 \mathrm{E}(x_3) = 178.52062 + 2.10555 \times 5.16 + 3.56240 \times 50.73333 + (-22.18799) \times 9.066667 = 168.9466$
+
+### (e)
+```{r 4.13 (e)}
+pred = predict(mod_re, data.frame(X1=3.0,X2=45,X3=10))
+pred_CI = predict(mod_re, data.frame(X1=3.0,X2=45,X3=10), interval = "confidence", level = 0.95)
+
+cat("The prediction for sales is:", pred)
+cat("The corresponding 95% prediction interval is:", 
+    "[", pred_CI[2], ",", pred_CI[3], "]")
+```
+
+
+## 4.14
+### (a)
+```{r 4.14 (a)}
+# data loading
+data <- read.table("/Users/ziyiou/study database/大三上/STA3001/assignment/homework3/bsemen.txt", 
+                    sep = "", header = TRUE)
+
+X0 <- rep(1, times = nrow(data))
+X1 <- data$X1
+X2 <- data$X2
+X3 <- data$X3
+y <- data$Y
+
+X <- cbind(X0, X1,X2,X3)
+
+# computation
+XTX = t(X)%*%X
+cat("X'X is:")
+print(XTX)
+
+XTX_inverse = solve(XTX)
+cat("(X'X)^(-1) is:")
+print(XTX_inverse)
+
+XTy = t(X)%*%y
+cat("X'y is:")
+print(XTy)
+```
+
+
+### (b)
+```{r 4.14 (b)}
+plot(X1,y,type="p",col="blue",pch=21, main="y vs X1")
+plot(X2,y,type="p",col="darkgreen",pch=21, main="y vs X2")
+plot(X3,y,type="p",col="purple",pch=21, main="y vs X3")
+```
+
+From the above three plots, we can see a general positive linear relationship between $y$ and $x_1$, a general negative linear relationship between $y$ and $x_2$. The third plot doesn't show a specific linear relationship between $y$ and $x_3$, the $y$ seem to be randomly distributed along $x_3$.
+
+### (c)
+The fitted equation is: $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + \hat{\beta}_3 x_3$. We use R to find the least square estimates of $\boldsymbol{\beta}$.
+
+```{r 4.14 (c)}
+mod = lm(y~X1+X2+X3)
+summary(mod)
+```
+
+By the summary of regression model, we get: $\hat{\beta}_0 = 39.4815, \ \hat{\beta}_1 = 1.0092, \ \hat{\beta}_2 = -1.8727, \ \hat{\beta}_3 = -0.3667$.
+
+$\Rightarrow$ The fitted equation is: $\hat{y} = 39.4815 + 1.0092 \times x_1 + (-1.8727) \times x_2 + (-0.3667) \times x_3$
+
+### (d)
+#### (i)
+
+\
+```{r 4.14 (d)-i}
+new_data <- data.frame(X1 = 3, X2 = 8, X3 = 9)
+
+mean_pred_interval <- predict(mod, newdata = new_data, interval = "confidence", level = 0.9)
+cat("The 90% confidence interval for the predicted mean value of y is:", 
+    "[", mean_pred_interval[2], ",", mean_pred_interval[3], "]")
+```
+
+#### (ii)
+
+\
+```{r 4.14 (d)-ii}
+indiv_pred_interval <- predict(mod, newdata = new_data, interval = "prediction", level = 0.9)
+cat("The 90% confidence interval for the predicted individual value of y is:", 
+    "[", indiv_pred_interval[2], ",", indiv_pred_interval[3], "]")
+```
+
+
+### (e)
+```{r 4.14 (e)}
+# ANOVA table
+summary(mod)
+quantile = qf(0.95, 3, 9)
+```
+
+$H_0 : \beta_1 = \beta_2 = \beta_3 = 0 \ ; \ H_1: H_0 \  \mathrm{is\ not\ true }$ \
+
+From the ANOVA table, we can know that $F_{\mathrm{obs}} = 30.08 \sim F(3,9)$
+
+From the F-distribution table, we get: $F(0.95; \ 3,9) = 3.862548$
+
+Since $F_{\mathrm{obs}} = 30.08 > 3.862548$, we reject the null hypothesis that $\beta_1 = \beta_2 = \beta_3 = 0$.
+
+
+
+
+## 4.15
+### (a)
+```{r 4.15 (a)}
+# data loading
+data <- read.table("/Users/ziyiou/study database/大三上/STA3001/assignment/homework3/silkw.txt", 
+                    sep = "", header = TRUE)
+X1 <- data$X1
+X2 <- data$X2
+Y <- data$Y
+
+plot(X1,Y,type="p",col="blue",pch=21, main="y vs X1")
+plot(X2,Y,type="p",col="darkgreen",pch=21, main="y vs X2")
+```
+
+From the above three plots, we can see a general negative linear relationship between $y$ and $x_1$, a general positive linear relationship between $y$ and $x_2$.
+
+### (b)
+The fitted equation is: $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2$. We use R to find the least square estimates of $\boldsymbol{\beta}$.
+
+```{r 4.15 (b)}
+mod = lm(Y~X1+X2)
+summary(mod)
+```
+
+By the summary of restricted model, we get: $\hat{\beta}_0 = 2.58810, \ \hat{\beta}_1 = -0.37802, \ \hat{\beta}_2 = 0.87677$.
+
+$\Rightarrow$ The fitted equation is: $\hat{y} = 2.58810 + (-0.37802) \times x_1 +0.87677 \times x_2$
+
+
+### (c)
+```{r 4.15 (c)}
+summary(mod)
+```
+
+$H_0 : \beta_1 = \beta_2 = 0\ ; \ H_1: H_0 \  \mathrm{is\ not\ true }$ \
+
+From the ANOVA table, we can know that $F_{\mathrm{obs}} = 59.16 \sim F(2,12)$
+
+From the F-distribution table, we get: $F(0.95; \ 2,12) = 3.89$
+
+Since $F_{\mathrm{obs}} = 59.16 > 3.89$, we reject the null hypothesis that $\beta_1 = \beta_2 = 0$.
+
+### (d)
+I will prefer the $\mathrm{log}_{10}\mathrm{Dose}$. Because from the ANOVA table we obtained in (c), we can see that the p-value of $\mathrm{log}_{10}\mathrm{Dose}$ is $9.89 \times 10^{-5}$, which is way smaller then the p-value of $\mathrm{log}_{10}\mathrm{Weight}$ (0.000267). Therefore $\mathrm{log}_{10}\mathrm{Dose}$ is more significant, which makes it a better predictor. 
+
+### (e)
+From the ANOVA table obtained in (c), the adjusted $R^2$ for the unrestricted model is 0.8926.
+
+We conduct the regression analysis based on the restricted model: $y = \beta_0 + \beta_1 x_1$.
+
+```{r 4.15 (e)}
+mod_re = lm(Y~X1)
+summary(mod_re)
+```
+
+From the ANOVA table we know that the adjusted $R^2$ for the restricted model is 0.687, which is smaller than 0.8926. So the unrestricted model can explain more variation in the data than the restricted model. Therefore I prefer the model involving both of the independent variables.
+
+## 4.16
+### (a)
+```{r 4.16 (a)-1}
+# data loading
+XTX = matrix(c(9, 136, 269, 260, 136, 2114, 4176, 3583, 269, 4176, 8257, 7104,
+               260, 3583, 7104, 12276), nrow = 4, ncol = 4)
+
+XTX_inverse = matrix(c(9.610, 0.008, -0.279, -0.044, 0.008, 0.509, -0.258, 0.001,
+                       -0.279, -0.258, 0.139, 0.001,-0.044, 0.001, 0.001, 0.0003),
+                     nrow = 4, ncol = 4)
+
+XTy = matrix(c(45, 648, 1283, 1821), nrow = 4, ncol = 1)
+
+yTy = 285
+
+beta_hat = matrix(c(-1.163461, 0.135270, 0.019950, 0.121954), nrow = 4, ncol = 1)
+```
+
+Know that the (1,1) entry of matrix $X'X$ is $n = 9$, the (1,2) entry of matrix $X'X$ is $\sum_{i=1}^{n} x_{i1} = 136$, the (1,3) entry of matrix $X'X$ is $\sum_{i=1}^{n} x_{i2} = 269$, the (1,4) entry of matrix $X'X$ is $\sum_{i=1}^{n} x_{i3} = 260$.
+
+So $\mathrm{E}(y) = \mathrm{E}(\hat{y}) =  \hat{\beta}_0 + \hat{\beta}_1 \mathrm{E}(x_1) + \hat{\beta}_2 \mathrm{E}(x_2) + \hat{\beta}_3 \mathrm{E}(x_3) = -1.163461 + 0.135270 \times 136 \div 9 + 0.019950 \times 269 \div 9 + 0.121954 \times 260 \div 9 = 5.000018$
+
+```{r 4.16 (a)-2}
+# ANOVA calculation
+n = 9
+p = 3
+y_bar = 5.000018
+
+RSS = as.numeric((yTy - t(XTy)%*%beta_hat - t(beta_hat)%*%XTy 
+                   + t(beta_hat)%*%XTX%*%beta_hat))
+MSE = as.numeric(1/(n-p-1)*(yTy - t(XTy)%*%beta_hat - t(beta_hat)%*%XTy 
+                   + t(beta_hat)%*%XTX%*%beta_hat))
+
+print(RSS)
+print(MSE)
+
+SST = yTy - n*(y_bar)^(2)
+print(SST)
+
+SSReg = SST - RSS
+MSReg = SSReg / p
+
+print(SSReg)
+print(MSReg)
+```
+
+The ANOVA table is as follows:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccc}
+\hline
+\textbf{Source} & \textbf{SS} & \textbf{d.f.} & \textbf{MS = SS/df} \\
+\hline
+Regression line & 57.97087 & 3 & 19.32362\\
+Error & 2.02751 & 5 & 0.40550 \\
+Total & 59.99838 & 8 & - \\
+\hline
+\end{tabular}
+\caption{MLR ANOVA Table for 4.16 (a)}
+\end{table}
+
+### (b)
+```{r 4.16 (b)}
+sigma2_hat = 1/(n-p-1)*(yTy - t(XTy)%*%beta_hat - t(beta_hat)%*%XTy 
+                   + t(beta_hat)%*%XTX%*%beta_hat)
+
+var_hat_beta_hat = as.numeric(sigma2_hat) * XTX_inverse
+
+sd_hat_beta_hat = sqrt(var_hat_beta_hat)
+print(sd_hat_beta_hat)
+```
+
+Taking the elements of the diagonal, we have: $\hat{se}(\hat{\beta_0}) = 1.97405124$, $\hat{se}(\hat{\beta_1}) = 0.45431348$, $\hat{se}(\hat{\beta_2}) = 0.23741280$, $\hat{se}(\hat{\beta_3}) = 0.01102954$.
+
+### (c)
+$n = 9, n - p - 1 = 9 - 3 -1 = 5$.
+
+Let $t_1, t_2, t_3$ denote the test statistics for testing $\beta_1 = 0$, $\beta_2 = 0$, $\beta_3 = 0$ respectively.
+
+Know that $t_i = \displaystyle \frac{\hat{\beta}_i-\beta_i}{\hat{se}(\hat{\beta})}, \ i = 1,2,3$. Each test statistics follows t distribution with degree of freedom $n-p-1 = 5$. Here we use significance level 0.05.
+
+From the t-distribution table, $t(0.975;5)= 2.571$. 
+
+$t_1 = \displaystyle \frac{0.135270}{0.45431348} = 0.297746 < 2.571$, accept the null hypothesis that $\beta_1 = 0$.
+
+$t_2 = \displaystyle \frac{0.019950}{0.23741280} = 0.08403085 < 2.571$, accept the null hypothesis that $\beta_2 = 0$.
+
+$t_3 = \displaystyle \frac{0.121954}{0.01102954} = 11.05703  > 2.571$, reject the null hypothesis that $\beta_3 = 0$.
+
+Conclusion: Under significance level 0.05, $\beta_1 = \beta_2 = 0, \  \beta_3 \neq 0$.
+
+## 4.18
+Proof:
+\begin{align*}
+\mathrm{Cov}(\boldsymbol{\hat{\mu}}, \boldsymbol{e}) &= \mathrm{Cov}(Hy, (I-H)y) \\
+&= H \mathrm{Cov}(y,y) (I-H)^{T} \\
+&= H \mathrm{Var}(y) (I-H) \ \ \mathrm{since} (I-H) \mathrm{is \ symmetric} \\
+&= H \mathrm{Var}(\epsilon) (I-H) \\
+&= \sigma^2 HI(I-H) \\
+&= H - H^2 \\
+&= X(X'X)^{-1}X' - X(X'X)^{-1}X'X(X'X)^{-1}X' \\
+&= X(X'X)^{-1}X' - X(X'X)^{-1}X' \\
+&= 0
+\end{align*}
+
+Therefore $\boldsymbol{\hat{\mu}}$ and $\boldsymbol{e}$ are statistically independent.
+
+## 4.23
+```{r 4.23-1}
+# data loading
+data <- read.table("/Users/ziyiou/study database/大三上/STA3001/assignment/homework3/lightintensity.txt", 
+                    sep = "", header = TRUE)
+
+X <- data$X
+Y <- data$Y
+```
+
+```{r 4.23-2}
+# scatter plot of light intensity against surface temperature
+plot(X,Y,type="p",col="blue",pch=21, main="y vs x", xlab = "log(Surface Temperature)", 
+     ylab = "log(Light Intensity)")
+```
+
+```{r 4.23-3}
+mod_quadratic = lm(Y~X + I(X^2))
+summary(mod_quadratic)
+```
+
+The fitted regression model is: $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x + \hat{\beta}_2 x^2 = 82.3852  -38.3102 \times x + 4.7025 \times x^2$
+
+\textbf{Interpret the estimates of coefficients}:
+
+
+$\beta_1$: If the log (Surface Temp) increases from 5 to 6, the estimated change in the mean of log(Light Intensity) is  5.012128 - (-38.3102)*(6-5) = 43.32233
+
+$\beta_2$: If the log (Surface Temp) increases from 5 to 6, the estimated change in the mean of log(Light Intensity) is  5.012128 - 4.7025*(6^2 - 5^2) = -46.71537
+
+\textbf{Calculate ANOVA table}:
+
+From the summary of the regression model, we get: $\sqrt{\mathrm{MSE}} = 0.3667, \  R^2 = \displaystyle \frac{\mathrm{SSReg}}{\mathrm{SST}} =\frac{\mathrm{SST - RSS}}{\mathrm{SST}}  = 0.6059$
+
+$\Rightarrow \mathrm{MSE} = (0.3667)^2 = 0.1344689, \mathrm{RSS} = (n-p-1) \mathrm{MSE} = (47-2-1)*0.1344689 = 5.916632$
+
+$\mathrm{SST} = 5.916632 \div (1-0.6059) = 15.01302, \mathrm{SSReg} = 15.01302 - 5.916632 = 9.096388, \mathrm{MSReg} = \displaystyle 9.096388 \div 2 = 4.548194$
+
+The ANOVA table is as follows:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{cccc}
+\hline
+\textbf{Source} & \textbf{SS} & \textbf{d.f.} & \textbf{MS = SS/df} \\
+\hline
+Regression line & 9.096388 & 2 & 4.548194\\
+Error & 5.916632 & 44 & 0.1344689 \\
+Total & 15.01302 & 46 & - \\
+\hline
+\end{tabular}
+\caption{MLR ANOVA Table for 4.23}
+\end{table}
+
+
+\textbf{The adequacy of the model fit}:
+The $R^2$ of the model is 0.6059, so the model explains 60.59\% of the variation in $y$.
+
+```{r 4.23-4}
+library(ggplot2)
+
+df = data_frame(X,Y)
+
+df$Y_pred <- predict(mod_quadratic, newdata = data_frame(df$X))
+
+ggplot(df, aes(x = X, y = Y)) +
+  geom_point(shape = 21, fill = "blue", color = "black") +  # Scatter plot
+  geom_line(aes(x = X, y = Y_pred), color = "red", size = 1) +  # Fitted curve
+  labs(title = "y vs x",
+       x = "log(Surface Temperature)",
+       y = "log(Light Intensity)") +
+  theme_minimal()
+```
+
+\
+
+\textbf{Other interpretation of the scatter plot}:
+
+Suppose the four stars with log (Surface Temp) around 3.50 don't follow the linear pattern established by the other stars, then the scatter plot shows a trend of exponential increasem indicating that this could be a exponential model.
+
+\textbf{Questions}:
+
+Can we omit these four stars when constructing regression model?
